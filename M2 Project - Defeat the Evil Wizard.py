@@ -21,9 +21,12 @@ class Character:
 
     # Add your heal method here
     def potion(self, heal):
-        self.heal = 10
+        self.heal = 20
         self.health += self.heal
-        print(f"{self.name} uses a potion to restore {self.heal} health.")
+        if self.health >= self.max_health:
+            print(f"{self.name} uses a potion to restore themselves to their max health of {self.max_health}.")
+        else:
+            print(f"{self.name} uses a potion to restore {self.heal} health. Health is now at {self.health}/{self.max_health}.")
 
     def unique_ability_1(self):
         pass
