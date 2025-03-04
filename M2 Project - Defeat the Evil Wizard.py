@@ -62,7 +62,6 @@ class Warrior(Character):
         print(f"{self.name} uses their second special ability: {self.second_ability}.")
         print(f"{self.second_ability_description}")
         
-        
 # Mage class (inherits from Character)
 class Mage(Character):
     def __init__(self, name):
@@ -143,6 +142,24 @@ class Summoner(Character):
 class EvilWizard(Character):
     def __init__(self, name):
         super().__init__(name, health=150, attack_power=15)  # Lower attack power
+        self.first_ability = "Summon minions"
+        self.second_ability = "None"
+
+    def unique_ability_1(self, opponent):
+        #added 12.5% chance for wizard to summon minions for more damage
+        print(f"{self.name} casts {self.first_ability}")
+        print(f"The minions swarm {opponent.name} overwhelming them and deal 35 damage!")
+        opponent.health -= 35
+        opponent.health = max (0, opponent.health)
+
+        if opponent.health == 0:
+            print(f"{opponent.name} has {opponent.health} health left!")
+            print(f"{opponent.name} has been defeated!")
+        else:
+            print(f"{opponent.name} now has {opponent.health}/{opponent.max_health} health left.")
+
+    def unique_ability_2(self):
+        pass
     
     # Evil Wizard's special ability: it can regenerate health
     def regenerate(self):
@@ -150,7 +167,7 @@ class EvilWizard(Character):
         print(f"\n{self.name} regenerates 5 health! Current health: {self.health}")
 
     def attack(self, opponent):
-        #added an else statement so the health never shows up as a negative number because thats not how it would in a real game
+        #now using max(0,opponent.health) so the health never shows up as a negative number because thats not how it would in a real game
         random_element = random.randint(1, 4)
         # print(f"random element {random_element}")
 
@@ -166,7 +183,6 @@ class EvilWizard(Character):
         total_damage = damage + self.bonus_damage
         # print(f"damamge - bonus power {damage} + {self.bonus_damage}")
         opponent.health -= total_damage
-
         opponent.health = max (0, opponent.health)
 
         attack_message = f"{self.name} attacks {opponent.name} for {total_damage} damage! "
@@ -204,7 +220,6 @@ def create_character():
         # Add Paladin class here
         pass
         
-
 # Battle function with user menu for actions
 def battle(player, wizard):
     while wizard.health > 0 and player.health > 0:
@@ -239,8 +254,13 @@ def battle(player, wizard):
 
         # Evil Wizard's turn to attack and regenerate
         if wizard.health > 0:
+            random_ability_1 = random.randint(1, 8)
             wizard.regenerate()
-            wizard.attack(player)
+            #added 12.5% chance for wizard to summon minions for more damage
+            if random_ability_1 == 1:
+                wizard.unique_ability_1(player)
+            else:
+                wizard.attack(player)
 
         if player.health <= 0:
             print(f"{player.name} has been defeated!")
@@ -256,10 +276,6 @@ def main():
 
     # Evil Wizard is created
     wizard = EvilWizard("The Dark Wizard")
-
-    # calls each unique ability so the user can see what they are and do
-    # player.unique_ability_1()
-    # player.unique_ability_2()
 
     # Start the battle
     battle(player, wizard)
