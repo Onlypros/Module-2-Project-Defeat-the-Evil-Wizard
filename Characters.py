@@ -12,27 +12,36 @@ class Character:
 
     def attack(self, opponent):
         #added an else statement so the health never shows up as a negative number because thats not how it would in a real game
-        damage = random.randint(0, self.attack_power) + self.bonus_damage
-        self.bonus_damage = 0
-        opponent.health -= damage
-        if opponent.health <= 0:
-            print(f"\n{self.name} attacks {opponent.name} for {damage} damage! {opponent.name} has {0} health left!")
+        damage = random.randint(0, self.attack_power)
+        # print(f"damage {damage}")
+        total_damage = damage + self.bonus_damage
+        # print(f"total damage {total_damage}")
+        # print(f"self bonus damage before {self.bonus_damage}")
+        opponent.health -= total_damage
+        # print(f"self bonus damage after {self.bonus_damage}")
+        opponent.health = max (0, opponent.health)
+
+        attack_message = f"\n{self.name} attacks {opponent.name} for {total_damage} damage!"
+        if opponent.health == 0:
+            print(f"{attack_message} {opponent.name} has {opponent.health} health left!")
             print(f"{opponent.name} has been defeated!")
         else:
-             print(f"{self.name} attacks {opponent.name} for {damage} damage! {opponent.name} has {opponent.health}/{opponent.max_health} health left.")
+            print(f"{attack_message} {opponent.name} has {opponent.health}/{opponent.max_health} health left.")
+
+        self.bonus_damage = 0
 
     def display_stats(self):
         print(f"{self.name}'s Stats - Health: {self.health}/{self.max_health}, Attack Power: {self.attack_power}")
 
     # Add your heal method here
-    def potion(self, heal):
-        self.heal = 20
-        self.health += self.heal
+    def potion(self):
+        heal_amount = 20
+        self.health += heal_amount
         if self.health > self.max_health:
             self.health = self.max_health
             print(f"{self.name} uses a potion to restore themselves to their max health of {self.max_health}.")
         else:
-            print(f"{self.name} uses a potion to restore {self.heal} health. Health is now at {self.health}/{self.max_health}.")
+            print(f"{self.name} uses a potion to restore {heal_amount} health. Health is now at {self.health}/{self.max_health}.")
 
     #adds unique abilities to the subclasses 
     def unique_ability_1(self):
@@ -58,7 +67,7 @@ class Warrior(Character):
         print(f"{self.name}'s max health increases to {self.max_health} and attack power increases to {self.attack_power}!")
 
     def unique_ability_2(self):
-        self.bonus_damage = 15  #this doesnt right just yet i need to adjust troubleshoot
+        self.bonus_damage = 15 
         print(f"{self.name} uses their second special ability: {self.second_ability}")
         print(f"{self.second_ability_description}")
         

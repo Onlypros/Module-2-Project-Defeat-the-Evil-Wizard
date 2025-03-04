@@ -61,7 +61,7 @@ def battle(player, wizard):
             player.unique_ability_2()
         elif choice == '4':
             # Call the heal method here
-            player.potion(player)
+            player.potion()
         elif choice == '5':
             player.display_stats()
         else:

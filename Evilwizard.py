@@ -13,14 +13,8 @@ class EvilWizard(Character):
         #added 12.5% chance for wizard to summon minions for more damage
         print(f"{self.name} casts {self.first_ability}")
         print(f"The minions swarm {opponent.name} overwhelming them and deal 35 damage!")
-        opponent.health -= 35
-        opponent.health = max (0, opponent.health)
-
-        if opponent.health == 0:
-            print(f"\n{opponent.name} has {opponent.health} health left!")
-            print(f"{opponent.name} has been defeated!")
-        else:
-            print(f"\n{opponent.name} now has {opponent.health}/{opponent.max_health} health left.")
+        self.bonus_damage = 35
+        super().attack(opponent)
 
     def unique_ability_2(self):
         pass
@@ -32,26 +26,9 @@ class EvilWizard(Character):
 
     def attack(self, opponent):
         #now using max(0,opponent.health) so the health never shows up as a negative number because thats not how it would in a real game
-        random_element = random.randint(1, 4)
-        # print(f"random element {random_element}")
-
-        if random_element == 1:
-            self.bonus_damage = 10
-        else:
-            self.bonus_damage = 0
-
-        if self.bonus_damage == 10:
+        #added 25% to apply 10 addiontal elemental damage
+        if random.randint(1,4) == 1:
+            self.bonus_damage =10    
             print(f"\n{self.name} adds void damage to his attack for an additional 10 damage!")
 
-        damage = random.randint(0, self.attack_power) 
-        total_damage = damage + self.bonus_damage
-        # print(f"damamge - bonus power {damage} + {self.bonus_damage}")
-        opponent.health -= total_damage
-        opponent.health = max (0, opponent.health)
-
-        attack_message = f"{self.name} attacks {opponent.name} for {total_damage} damage! "
-        if opponent.health == 0:
-            print(f"{attack_message}{opponent.name} has {opponent.health} health left!")
-            print(f"{opponent.name} has been defeated!")
-        else:
-            print(f"{attack_message}{opponent.name} has {opponent.health}/{opponent.max_health} health left.")
+        super().attack(opponent)
