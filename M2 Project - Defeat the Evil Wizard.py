@@ -1,3 +1,5 @@
+import random
+
 # Base Character class
 class Character:
     def __init__(self, name, health, attack_power):
@@ -9,6 +11,7 @@ class Character:
 
     def attack(self, opponent):
         #added an else statement so the health never shows up as a negative number because thats not how it would in a real game
+        self.attack_power = random.randint(0, self.attack_power)
         opponent.health -= self.attack_power
         if opponent.health <= 0:
             print(f"{self.name} attacks {opponent.name} for {self.attack_power} damage! {opponent.name} has {0} health left!")
