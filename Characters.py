@@ -10,15 +10,16 @@ class Character:
         self.bonus_damage = 0  #added bonus damage to use in unique abilites
         self.miss = False
         self.miss_message = ""
+        self.reduced_damage = 1
 
     def attack(self, opponent):
-        damage = random.randint(0, self.attack_power) # randomizes the damage
-        # print(f"damage {damage}")
-        total_damage = damage + self.bonus_damage
-        # print(f"total damage {total_damage}")
-        # print(f"self bonus damage before {self.bonus_damage}")
+        damage = random.randint(0, self.attack_power)# randomizes the damage
+        # print(f"damage = {damage}")
+        total_damage = (damage + self.bonus_damage) * self.reduced_damage 
+        # print(f"total damage = {total_damage}")
+        # print(f"self bonus damage before = {self.bonus_damage}")
         opponent.health -= total_damage
-        # print(f"self bonus damage after {self.bonus_damage}")
+        # print(f"self bonus damage after = {self.bonus_damage}")
         opponent.health = max (0, opponent.health) #makes sure health never shows a negative number like a real game
 
         #reworked attack messaging to make it more precise
@@ -30,6 +31,8 @@ class Character:
             print(f"{attack_message} {opponent.name} has {opponent.health}/{opponent.max_health} health left.")
 
         self.bonus_damage = 0 #added bonus damage to use in unique abilites
+        self.reduced_damage = 0 #adds the ability to reduce damamge
+        # print(f"self bonus damage after 2 = {self.bonus_damage}")
 
     def attack_ability(self, attack_message, opponent):
         if opponent.health == 0:
@@ -93,51 +96,56 @@ class Mage(Character):
     # Add your cast spell method here
     def unique_ability_1(self, opponent):
         attack_message = f"\n{self.name} casts {self.first_ability} and deals 40 damage to {opponent.name}!"
-        # print(f"\n{self.name} uses their first special ability: {self.first_ability}")
         opponent.health = max(0, opponent.health - 40)
         self.attack_ability(attack_message, opponent)
 
     def unique_ability_2(self, opponent):
         opponent.miss = True
-        opponent.miss_message = f"{opponent.name} is unable to attack while in sheep form"
-        print(f"\n{self.name} casts {self.second_ability}. Turning {opponent.name} into a sheep for one turn!")
-        
+        opponent.miss_message = f"{opponent.name} is unable to attack while in sheep form."
+        print(f"\n{self.name} casts {self.second_ability}. Turning {opponent.name} into a sheep for one turn!"
+        f"\n{opponent.name} has {opponent.health}/{opponent.max_health} health left.")
 
 # Archer class (inherits from Charater)
 class Archer(Character):
     #need to finish flushing out this class
     def __init__(self, name):
         super().__init__(name, health=110, attack_power=30)
-        self.first_ability = "Rapid Shot"
-        self.first_ability_description = "None"
+        self.first_ability = "Full Draw"
+        self.first_ability_description = "Draw your bow near its limit and do 40 damage. "
         self.second_ability = "Evade"
-        self.second_ability_description = "None"
+        self.second_ability_description = "Evade the next attack."
 
-    def unique_ability_1(self):
-        #rapid shot
-        pass
+    def unique_ability_1(self, opponent):
+        attack_message = f"\n{self.name} draws with all their might and releases a mighty arrow!"
+        opponent.health = max(0, opponent.health - 40)
+        self.attack_ability(attack_message, opponent)
 
-    def unique_ability_2(self, opponet):
-        #evade
-        pass
-
+    def unique_ability_2(self, opponent):
+        opponent.miss = True
+        print(f"\n{self.name} uses their heighted relaxes to evade the incoming attack!")
+        opponent.miss_message = f"{opponent.name} misses his attack." 
+        # print(f"{self.name} uses {self.second_ability}")
+        print(f"\n{opponent.name} has {opponent.health}/{opponent.max_health} health left.")
+        
 # Paladin class (inherits from Character)
 class Paladin(Character):
     #need to finish flushing out this class
     def __init__(self, name):
         super().__init__(name, health=150, attack_power=20)
-        self.first_ability = "None"
-        self.first_ability_description = "None"
-        self.second_ability = "None"
-        self.second_ability_description = "None"
+        self.first_ability = "Smite"
+        self.first_ability_description = "Unleash you holy powers to deal 20 bonus damage"
+        self.second_ability = "Divine Protection"
+        self.second_ability_description = "Reduce the next attack by 50%"
 
-    def unique_ability_1(self):
-        #smite
-        pass
+    def unique_ability_1(self, opponent):
+        attack_message = f"\n{self.name} casts {self.first_ability} to deal 20 bonus damage to {opponent.name}!"
+        self.bonus_damage = 20
+        self.attack(opponent)
 
     def unique_ability_2(self):
-        #divine shield
-        pass
+        self.reduced_damage = 0.5
+        print(f"{self.name} casts {self.second_ability}.")
+        print(f"{self.second_ability_description}")
 
 # Dark Knight class (inherits from Character)
 class DarkKnight(Character):

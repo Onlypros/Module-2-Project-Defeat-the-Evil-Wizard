@@ -29,8 +29,7 @@ def create_character():
     elif class_choice == '3':
         return Archer(name)
     elif class_choice == '4':
-        # return Paladin(name)
-        pass
+        return Paladin(name)
     elif class_choice == '5':
         # return DarkKnight(name)
         pass

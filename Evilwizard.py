@@ -11,21 +11,19 @@ class EvilWizard(Character):
 
     def unique_ability_1(self, opponent):
         #added 12.5% chance for wizard to summon minions for more damage
-        print(f)
-        print(f"\n{self.name} screams with rage and casts {self.first_ability}\n"
+        print(f"{self.name} casts {self.first_ability}")
+        attack_message = (f"\n{self.name} screams with rage and casts {self.first_ability}\n"
         f"The minions swarm {opponent.name} overwhelming them and deal 35 damage!")
         opponent.health = max(0, opponent.health -35)
         super().attack_ability(attack_message, opponent)
-        # self.bonus_damage = 35
-        # super().attack(opponent)
 
     def unique_ability_2(self):
         pass
     
     # Evil Wizard's special ability: it can regenerate health
     def regenerate(self):
-        self.health += 5  # Lower regeneration amount
-        print(f"\n{self.name} regenerates 5 health! Current health: {self.health}")
+        self.health = min(self.health + 5, self.max_health)  # Lower regeneration amount
+        print(f"\n{self.name} regenerates 5 health! Current health: {self.health}/{self.max_health}.")
 
     def attack(self, opponent):
         #now using max(0,opponent.health) so the health never shows up as a negative number because thats not how it would in a real game
