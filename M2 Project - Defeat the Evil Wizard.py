@@ -31,8 +31,7 @@ def create_character():
     elif class_choice == '4':
         return Paladin(name)
     elif class_choice == '5':
-        # return DarkKnight(name)
-        pass
+        return DarkKnight(name)
     elif class_choice == '6':
         # add summoner class here
         pass
@@ -52,11 +51,15 @@ def battle(player, wizard):
         if choice == '1':
             player.attack(wizard)
         elif choice == '2':
-            # Call the special ability here
-            player.unique_ability_1(wizard)
+            if player.first_ability in ["Fireball", "Sheep", "Full Draw", "Evade", "Smite"]:
+                player.unique_ability_1(wizard)
+            else:
+                player.unique_ability_1()
         elif choice == '3':
-            # Call the special ability here
-            player.unique_ability_2(wizard)
+            if player.second_ability in ["Warrior's Resolve", "Savage Blow", "Divine Protection"]:
+                player.unique_ability_2()
+            else:
+                player.unique_ability_2(Wizard)
         elif choice == '4':
             # Call the heal method here
             player.potion()

@@ -14,7 +14,7 @@ class Character:
 
     def attack(self, opponent):
         damage = random.randint(0, self.attack_power)# randomizes the damage
-        # print(f"damage = {damage}")
+        # print(f"damage = {damage} and reduced damage = {self.reduced_damage}")
         total_damage = (damage + self.bonus_damage) * self.reduced_damage 
         # print(f"total damage = {total_damage}")
         # print(f"self bonus damage before = {self.bonus_damage}")
@@ -31,7 +31,7 @@ class Character:
             print(f"{attack_message} {opponent.name} has {opponent.health}/{opponent.max_health} health left.")
 
         self.bonus_damage = 0 #added bonus damage to use in unique abilites
-        self.reduced_damage = 0 #adds the ability to reduce damamge
+        self.reduced_damage = 1 #adds the ability to reduce damamge
         # print(f"self bonus damage after 2 = {self.bonus_damage}")
 
     def attack_ability(self, attack_message, opponent):
@@ -64,7 +64,7 @@ class Character:
 class Warrior(Character):
     def __init__(self, name):
         super().__init__(name, health=140, attack_power=25)  # Boost health and attack power
-        self.first_ability = "Warrior's Resolve 1/1"
+        self.first_ability = "Warrior's Resolve"
         self.first_ability_description = "Increases your max health by 25." #remove the 10 attack power?
         self.second_ability = "Savage Blow"
         self.second_ability_description = f"{self.name} gives out a mighty roar and adds +15 damage to your next attack!"
@@ -152,9 +152,9 @@ class DarkKnight(Character):
     #need to finish flushing out this class
     def __init__(self, name):
         super().__init__(name, health=130, attack_power=30)
-        self.first_ability = "None"
-        self.first_ability_description = "None"
-        self.second_ability = "None"
+        self.first_ability = "Drain Life"
+        self.first_ability_description = "Drains 25 health from target and heals you for 25 health "
+        self.second_ability = "Blood Pact"
         self.second_ability_description = "None"
 
     def unique_ability_1(self):
