@@ -1,6 +1,6 @@
 import random
 
-from Characters import Warrior, Mage
+from Characters import Warrior, Mage, Archer, Paladin, DarkKnight
 from Evilwizard import EvilWizard
 
 # Function to create player character based on user input
@@ -27,13 +27,12 @@ def create_character():
     elif class_choice == '2':
         return Mage(name)
     elif class_choice == '3':
-        # Add Archer class here
-        pass
+        return Archer(name)
     elif class_choice == '4':
-        # Add Paladin class here
+        # return Paladin(name)
         pass
     elif class_choice == '5':
-        # add dark knight class here
+        # return DarkKnight(name)
         pass
     elif class_choice == '6':
         # add summoner class here
@@ -55,10 +54,10 @@ def battle(player, wizard):
             player.attack(wizard)
         elif choice == '2':
             # Call the special ability here
-            player.unique_ability_1()
+            player.unique_ability_1(wizard)
         elif choice == '3':
             # Call the special ability here
-            player.unique_ability_2()
+            player.unique_ability_2(wizard)
         elif choice == '4':
             # Call the heal method here
             player.potion()
@@ -69,10 +68,13 @@ def battle(player, wizard):
             continue
 
         # Evil Wizard's turn to attack and regenerate
-        if wizard.health > 0:
+        if wizard.miss == True:
+            print(f"{player.miss_message}")
+            wizard.miss = False
+            continue
+        elif wizard.health > 0:
             random_ability_1 = random.randint(1, 8)
             wizard.regenerate()
-            print()
             #added 12.5% chance for wizard to summon minions for more damage
             if random_ability_1 == 1:
                 wizard.unique_ability_1(player)

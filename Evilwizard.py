@@ -11,10 +11,13 @@ class EvilWizard(Character):
 
     def unique_ability_1(self, opponent):
         #added 12.5% chance for wizard to summon minions for more damage
-        print(f"{self.name} casts {self.first_ability}")
-        print(f"The minions swarm {opponent.name} overwhelming them and deal 35 damage!")
-        self.bonus_damage = 35
-        super().attack(opponent)
+        print(f)
+        print(f"\n{self.name} screams with rage and casts {self.first_ability}\n"
+        f"The minions swarm {opponent.name} overwhelming them and deal 35 damage!")
+        opponent.health = max(0, opponent.health -35)
+        super().attack_ability(attack_message, opponent)
+        # self.bonus_damage = 35
+        # super().attack(opponent)
 
     def unique_ability_2(self):
         pass
@@ -29,6 +32,6 @@ class EvilWizard(Character):
         #added 25% to apply 10 addiontal elemental damage
         if random.randint(1,4) == 1:
             self.bonus_damage =10    
-            print(f"\n{self.name} adds void damage to his attack for an additional 10 damage!")
-
+            print(f"{self.name} randomly adds void damage to his attack for an additional 10 damage!")
         super().attack(opponent)
+        #todo extra blank like when he adds void damage and when the attack then happens after it bothers me
