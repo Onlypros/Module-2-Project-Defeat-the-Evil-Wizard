@@ -11,6 +11,8 @@ class Character:
         self.miss = False
         self.miss_message = ""
         self.reduced_damage = 1
+        self.ability_1_cooldown = 0
+        self.ability_2_cooldown = 0
 
     def attack(self, opponent):
         damage = random.randint(0, self.attack_power)# randomizes the damage
@@ -67,10 +69,11 @@ class Warrior(Character):
         self.first_ability = "Warrior's Resolve"
         self.first_ability_description = "Increases your max health by 25." #remove the 10 attack power?
         self.second_ability = "Savage Blow"
-        self.second_ability_description = f"{self.name} gives out a mighty roar and adds +15 damage to your next attack!"
+        self.second_ability_description = f"{self.name} gives out a mighty roar and adds +25 damage to your next attack!"
 #todo i want to make both of these abilites a one time use since they boost stats it would be broken if not
     # Add your power attack method here
     def unique_ability_1(self):
+        self.health += 25
         self.max_health += 25 #also heal for 25? do i want to make it so this can only be used one time per game?
         # self.attack_power += 10
         # if 

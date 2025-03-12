@@ -39,10 +39,24 @@ def create_character():
 # Battle function with user menu for actions
 def battle(player, wizard):
     while wizard.health > 0 and player.health > 0:
+        if player.ability_1_cooldown > 0:
+            player.ability_1_cooldown -= 1
+        if player.ability_2_cooldown > 0:
+            player.ability_2_cooldown -= 1
+
+        if player.ability_1_cooldown > 0:
+            cooldown1_status = f"CD: {player.ability_1_cooldown} turn/s"
+        else:
+            cooldown1_status = "(Ready)"
+        if player.ability_2_cooldown > 0:
+            cooldown2_status = f"CD: {player.ability_2_cooldown} turn/s"
+        else:
+            cooldown2_status = "(Ready)"
+        
         print("\n--- Your Turn ---")
         print("1. Attack")
-        print(f"2. Unique ability #1 {player.first_ability} - {player.first_ability_description}")
-        print(f"3. Unique ability #2 {player.second_ability} - {player.second_ability_description}")
+        print(f"2. Unique ability #1 {player.first_ability} ({cooldown1_status}) - {player.first_ability_description}")
+        print(f"3. Unique ability #2 {player.second_ability} ({cooldown2_status}) - {player.second_ability_description}")
         print("4. Use a potion to heal 20 health")
         print("5. View Stats")
         
@@ -51,15 +65,23 @@ def battle(player, wizard):
         if choice == '1':
             player.attack(wizard)
         elif choice == '2':
-            if player.first_ability in ["Fireball", "Sheep", "Full Draw", "Evade", "Smite"]:
-                player.unique_ability_1(wizard)
+            if player.ability_1_cooldown > 0:
+                print(f"{player.first_ability} is on cooldown for {player.ability_1_cooldown} more turns. ")
             else:
-                player.unique_ability_1()
+                if player.first_ability in ["Fireball", "Sheep", "Full Draw", "Evade", "Smite"]:
+                    player.unique_ability_1(wizard)
+                else:
+                    player.unique_ability_1()
+                player.ability_1_cooldown = 3
         elif choice == '3':
-            if player.second_ability in ["Warrior's Resolve", "Savage Blow", "Divine Protection"]:
-                player.unique_ability_2()
+            if player.ability_2_cooldown > 0:
+                print(f"{player.second_ability} is on cooldown for {player.ability_2_cooldown} more turns. ")
             else:
-                player.unique_ability_2(Wizard)
+                if player.second_ability in ["Warrior's Resolve", "Savage Blow", "Divine Protection"]:
+                    player.unique_ability_2()
+                else:
+                    player.unique_ability_2(wizard)
+                player.ability_2_cooldown = 3
         elif choice == '4':
             # Call the heal method here
             player.potion()

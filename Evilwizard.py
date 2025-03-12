@@ -5,7 +5,7 @@ from Characters import Character
 # EvilWizard class (inherits from Character)
 class EvilWizard(Character):
     def __init__(self, name):
-        super().__init__(name, health=150, attack_power=15)  # Lower attack power
+        super().__init__(name, health=150, attack_power=15)  # Lower attack power. Not sure why this was created in the starter code but leaving the dmg as is for balancing.
         self.first_ability = "Summon minions"
         self.second_ability = "None"
 
@@ -22,7 +22,7 @@ class EvilWizard(Character):
     
     # Evil Wizard's special ability: it can regenerate health
     def regenerate(self):
-        self.health = min(self.health + 5, self.max_health)  # Lower regeneration amount
+        self.health = min(self.health + 5, self.max_health)  # Lower regeneration amount. Not sure why this was created in the starter code but leaving the regen as is for balancing.
         print(f"\n{self.name} regenerates 5 health! Current health: {self.health}/{self.max_health}.")
 
     def attack(self, opponent):
