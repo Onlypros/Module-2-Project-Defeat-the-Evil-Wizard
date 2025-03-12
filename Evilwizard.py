@@ -2,8 +2,7 @@ import random
 
 from Characters import Character
 
-# EvilWizard class (inherits from Character)
-class EvilWizard(Character):
+class EvilWizard(Character): # EvilWizard class (inherits from Character)
     def __init__(self, name):
         super().__init__(name, health=150, attack_power=15)  # Lower attack power. Not sure why this was created in the starter code but leaving the dmg as is for balancing.
         self.first_ability = "Summon minions"
@@ -17,8 +16,8 @@ class EvilWizard(Character):
         opponent.health = max(0, opponent.health -35)
         super().attack_ability(attack_message, opponent)
 
-    def unique_ability_2(self):
-        pass
+    # def unique_ability_2(self):
+    #     pass add later?
     
     # Evil Wizard's special ability: it can regenerate health
     def regenerate(self):
@@ -30,6 +29,6 @@ class EvilWizard(Character):
         #added 25% to apply 10 addiontal elemental damage
         if random.randint(1,4) == 1:
             self.bonus_damage =10    
-            print(f"{self.name} randomly adds void damage to his attack for an additional 10 damage!")
+            print(f"{self.name} channels his evil powers, adding void damage to his attack (+10 bonus damage)!")
         super().attack(opponent)
         #todo extra blank like when he adds void damage and when the attack then happens after it bothers me

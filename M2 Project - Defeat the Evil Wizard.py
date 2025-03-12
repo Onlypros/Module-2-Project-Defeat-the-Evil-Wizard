@@ -6,19 +6,19 @@ from Evilwizard import EvilWizard
 # Function to create player character based on user input
 def create_character():
     # class_choice now correctly only accepts valid inputs
-    print("\nChoose your character class:")
+    print("\n!=============== Choose your character class ===============!")
     print("1. Warrior")
     print("2. Mage")
-    print("3. Archer")  # Add Archer
-    print("4. Paladin")  # Add Paladin 
-    print("5. Dark Knight") #add dark knight
-    print("6. Summoner") #add summoner
+    print("3. Archer")  
+    print("4. Paladin")  
+    print("5. Dark Knight") 
+    # print("6. Summoner") add summoner later?
     
     while True:
         class_choice = input("\nEnter the number of your class choice: ").strip()
-        if class_choice in ('1', '2', '3', '4', '5', '6'):
+        if class_choice in ('1', '2', '3', '4', '5'):
             break
-        print("Invalid choice. Please enter 1-6.")
+        print("Invalid choice. Please enter 1-5.")
         
     name = input("Enter your character's name: ")
 
@@ -32,9 +32,9 @@ def create_character():
         return Paladin(name)
     elif class_choice == '5':
         return DarkKnight(name)
-    elif class_choice == '6':
-        # add summoner class here
-        pass
+    # elif class_choice == '6':
+    #     add summoner class here later?
+    #     pass
         
 # Battle function with user menu for actions
 def battle(player, wizard):
@@ -43,21 +43,29 @@ def battle(player, wizard):
             player.ability_1_cooldown -= 1
         if player.ability_2_cooldown > 0:
             player.ability_2_cooldown -= 1
+        if player.potion_cooldown > 0:
+            player.potion_cooldown -= 1
 
         if player.ability_1_cooldown > 0:
-            cooldown1_status = f"CD: {player.ability_1_cooldown} turn/s"
+            cooldown1_status = f"CD: {player.ability_1_cooldown} turn(s)"
         else:
             cooldown1_status = "(Ready)"
+
         if player.ability_2_cooldown > 0:
-            cooldown2_status = f"CD: {player.ability_2_cooldown} turn/s"
+            cooldown2_status = f"CD: {player.ability_2_cooldown} turn(s)"
         else:
             cooldown2_status = "(Ready)"
-        
+
+        if player.potion_cooldown > 0:
+            potion_cooldown_status = f"CD: {player.potion_cooldown} turn(s)"
+        else:
+            potion_cooldown_status = "(Ready)"
+            
         print("\n--- Your Turn ---")
         print("1. Attack")
         print(f"2. Unique ability #1 {player.first_ability} ({cooldown1_status}) - {player.first_ability_description}")
         print(f"3. Unique ability #2 {player.second_ability} ({cooldown2_status}) - {player.second_ability_description}")
-        print("4. Use a potion to heal 20 health")
+        print(f"4. Use a potion to heal 25 health ({potion_cooldown_status})")
         print("5. View Stats")
         
         choice = input("\nChoose an action: ").strip()
@@ -68,11 +76,11 @@ def battle(player, wizard):
             if player.ability_1_cooldown > 0:
                 print(f"{player.first_ability} is on cooldown for {player.ability_1_cooldown} more turns. ")
             else:
-                if player.first_ability in ["Fireball", "Sheep", "Full Draw", "Evade", "Smite"]:
+                if player.first_ability in ["Fireball", "Sheep", "Full Draw", "Evade", "Smite", "Drain Life"]:
                     player.unique_ability_1(wizard)
                 else:
                     player.unique_ability_1()
-                player.ability_1_cooldown = 3
+                player.ability_1_cooldown = 4
         elif choice == '3':
             if player.ability_2_cooldown > 0:
                 print(f"{player.second_ability} is on cooldown for {player.ability_2_cooldown} more turns. ")
@@ -81,10 +89,14 @@ def battle(player, wizard):
                     player.unique_ability_2()
                 else:
                     player.unique_ability_2(wizard)
-                player.ability_2_cooldown = 3
-        elif choice == '4':
-            # Call the heal method here
-            player.potion()
+                player.ability_2_cooldown = 4
+        elif choice == '4': # Call the heal method here
+            if player.potion_cooldown > 0:
+                print(f"Potion is on cooldown for {player.potion_cooldown} more turn(s). ")
+            else:
+                player.potion()
+                player.potion_cooldown = 4
+
         elif choice == '5':
             player.display_stats()
         else:
@@ -92,14 +104,14 @@ def battle(player, wizard):
             continue
 
         # Evil Wizard's turn to attack and regenerate
+        print("\n!--------------- Dark Wizard's Turn ---------------!")
         if wizard.miss == True:
             print(f"{player.miss_message}")
             wizard.miss = False
             continue
         elif wizard.health > 0:
-            random_ability_1 = random.randint(1, 8)
+            random_ability_1 = random.randint(1, 8) #added 12.5% chance for wizard to summon minions for more damage
             wizard.regenerate()
-            #added 12.5% chance for wizard to summon minions for more damage
             if random_ability_1 == 1:
                 wizard.unique_ability_1(player)
             else:
@@ -109,8 +121,10 @@ def battle(player, wizard):
             print(f"{player.name} has been defeated!")
             break
 
-    if wizard.health <= 0:
-        print(f"The wizard {wizard.name} has been defeated by {player.name}!")
+        if wizard.health <= 0:
+            print(f"The wizard {wizard.name} has been defeated by {player.name}!")
+
+        print("\n!=============== End Of Turn ===============!")
 
 # Main function to handle the flow of the game
 def main():
